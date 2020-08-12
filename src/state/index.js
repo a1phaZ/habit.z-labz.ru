@@ -1,9 +1,10 @@
-import {SET_VIEW, SET_PANEL} from "./actions";
+import {SET_VIEW, SET_PANEL, SET_MODAL} from "./actions";
 import React, {createContext, useReducer} from 'react';
 
 const initialState = {
 	view: 'preloader',
-	panel: 'preloader'
+	panel: 'preloader',
+	activeModal: null
 }
 
 const reducer = (state, action) => {
@@ -18,6 +19,11 @@ const reducer = (state, action) => {
 			return {
 				...state,
 				panel: action.payload.panel
+			}
+		case SET_MODAL:
+			return {
+				...state,
+				activeModal: action.payload.modal
 			}
 		default:
 			return state;

@@ -1,47 +1,37 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
-import Button from '@vkontakte/vkui/dist/components/Button/Button';
-import Group from '@vkontakte/vkui/dist/components/Group/Group';
-import Cell from '@vkontakte/vkui/dist/components/Cell/Cell';
-import Div from '@vkontakte/vkui/dist/components/Div/Div';
-import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
+import {CellButton, FixedLayout, FormLayout} from "@vkontakte/vkui";
+import Icon24Add from '@vkontakte/icons/dist/24/add';
+import {State} from "../state";
+import {SET_MODAL} from "../state/actions";
 
-const Home = ({ id, go, fetchedUser }) => (
-	<Panel id={id}>
-		<PanelHeader>Example</PanelHeader>
-		{fetchedUser &&
-		<Group title="User Data Fetched with VK Bridge">
-			<Cell
-				before={fetchedUser.photo_200 ? <Avatar src={fetchedUser.photo_200}/> : null}
-				description={fetchedUser.city && fetchedUser.city.title ? fetchedUser.city.title : ''}
+const Home = ({ id }) => {
+	const [, dispatch] = useContext(State);
+	return (
+		<Panel id={id}>
+			<PanelHeader>Example</PanelHeader>
+			<FixedLayout
+				vertical={'bottom'}
 			>
-				{`${fetchedUser.first_name} ${fetchedUser.last_name}`}
-			</Cell>
-		</Group>}
-
-		<Group title="Navigation Example">
-			<Div>
-				<Button size="xl" level="2" onClick={go} data-to="persik">
-					Show me the Persik, please
-				</Button>
-			</Div>
-		</Group>
-	</Panel>
-);
+				<FormLayout>
+					<CellButton
+						onClick={() => {
+							dispatch({type: SET_MODAL, payload: {modal: 'add-habit'}})
+						}}
+						before={<Icon24Add/>}
+					>
+						Создать цель
+					</CellButton>
+				</FormLayout>
+			</FixedLayout>
+		</Panel>
+	)
+};
 
 Home.propTypes = {
 	id: PropTypes.string.isRequired,
-	go: PropTypes.func.isRequired,
-	fetchedUser: PropTypes.shape({
-		photo_200: PropTypes.string,
-		first_name: PropTypes.string,
-		last_name: PropTypes.string,
-		city: PropTypes.shape({
-			title: PropTypes.string,
-		}),
-	}),
 };
 
 export default Home;
