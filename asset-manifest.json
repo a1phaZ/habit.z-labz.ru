@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.js": "/habit.z-labz.ru/static/js/main.40d735e5.chunk.js",
-    "main.js.map": "/habit.z-labz.ru/static/js/main.40d735e5.chunk.js.map",
+    "main.js": "/habit.z-labz.ru/static/js/main.e8b05033.chunk.js",
+    "main.js.map": "/habit.z-labz.ru/static/js/main.e8b05033.chunk.js.map",
     "runtime-main.js": "/habit.z-labz.ru/static/js/runtime-main.4636e08c.js",
     "runtime-main.js.map": "/habit.z-labz.ru/static/js/runtime-main.4636e08c.js.map",
     "static/css/2.1e562f28.chunk.css": "/habit.z-labz.ru/static/css/2.1e562f28.chunk.css",
-    "static/js/2.b7e2510c.chunk.js": "/habit.z-labz.ru/static/js/2.b7e2510c.chunk.js",
-    "static/js/2.b7e2510c.chunk.js.map": "/habit.z-labz.ru/static/js/2.b7e2510c.chunk.js.map",
+    "static/js/2.ad4b583b.chunk.js": "/habit.z-labz.ru/static/js/2.ad4b583b.chunk.js",
+    "static/js/2.ad4b583b.chunk.js.map": "/habit.z-labz.ru/static/js/2.ad4b583b.chunk.js.map",
     "index.html": "/habit.z-labz.ru/index.html",
-    "precache-manifest.2acf3f382ae0dbf9b694d2d86b3ef285.js": "/habit.z-labz.ru/precache-manifest.2acf3f382ae0dbf9b694d2d86b3ef285.js",
+    "precache-manifest.cd3d5ac7f7445bbe2e02504fe366ccc6.js": "/habit.z-labz.ru/precache-manifest.cd3d5ac7f7445bbe2e02504fe366ccc6.js",
     "service-worker.js": "/habit.z-labz.ru/service-worker.js",
     "static/css/2.1e562f28.chunk.css.map": "/habit.z-labz.ru/static/css/2.1e562f28.chunk.css.map",
-    "static/js/2.b7e2510c.chunk.js.LICENSE.txt": "/habit.z-labz.ru/static/js/2.b7e2510c.chunk.js.LICENSE.txt"
+    "static/js/2.ad4b583b.chunk.js.LICENSE.txt": "/habit.z-labz.ru/static/js/2.ad4b583b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.4636e08c.js",
     "static/css/2.1e562f28.chunk.css",
-    "static/js/2.b7e2510c.chunk.js",
-    "static/js/main.40d735e5.chunk.js"
+    "static/js/2.ad4b583b.chunk.js",
+    "static/js/main.e8b05033.chunk.js"
   ]
 }
