@@ -1,5 +1,4 @@
-import React, {useState, useEffect, useContext, useReducer} from 'react';
-import bridge from '@vkontakte/vk-bridge';
+import React, {useState, useContext, useReducer} from 'react';
 import View from '@vkontakte/vkui/dist/components/View/View';
 import '@vkontakte/vkui/dist/vkui.css';
 
@@ -44,28 +43,8 @@ const reducer = (state, action) => {
 const App = () => {
 	const [state, dispatch] = useContext(State);
 	const [appState, dispatchApp] = useReducer(reducer, initialState);
-	const [fetchedUser, setUser] = useState(null);
-	const [popout, setPopout] = useState(null);
 	const [title, setTitle] = useState('');
 	const [days, setDays] = useState(21);
-
-	useEffect(() => {
-		bridge.subscribe(({detail: {type, data}}) => {
-			if (type === 'VKWebAppUpdateConfig') {
-				const schemeAttribute = document.createAttribute('scheme');
-				schemeAttribute.value = data.scheme ? data.scheme : 'client_light';
-				document.body.attributes.setNamedItem(schemeAttribute);
-			}
-		});
-
-		async function fetchData() {
-			const user = await bridge.send('VKWebAppGetUserInfo');
-			setUser(user);
-			setPopout(null);
-		}
-
-		fetchData();
-	}, []);
 
 	const modalBack = () => {
 		dispatch({type: SET_MODAL, payload: {modal: null}});
@@ -141,8 +120,8 @@ const App = () => {
 			<View activePanel={state.panel} id={'startup'}>
 				<Startup id={'startup'}/>
 			</View>
-			<View activePanel={state.panel} popout={popout} id={'home'} modal={modal}>
-				<Home id='home' fetchedUser={fetchedUser} habits={appState.habits}/>
+			<View activePanel={state.panel} id={'home'} modal={modal}>
+				<Home id='home' habits={appState.habits}/>
 			</View>
 		</Root>
 	);
