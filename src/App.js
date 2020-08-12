@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useReducer} from 'react';
 import bridge from '@vkontakte/vk-bridge';
 import View from '@vkontakte/vkui/dist/components/View/View';
 import '@vkontakte/vkui/dist/vkui.css';
@@ -23,8 +23,27 @@ import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
 import Icon24Add from '@vkontakte/icons/dist/24/add';
 
 const osName = platform();
+const SET_HABITS = 'SET_HABITS';
+
+const initialState = {
+	habits: []
+}
+
+const reducer = (state, action) => {
+	switch (action.type) {
+		case SET_HABITS:
+			return {
+				...state,
+				habits: [...state.habits, action.payload.habit]
+			}
+		default:
+			return state;
+	}
+}
+
 const App = () => {
 	const [state, dispatch] = useContext(State);
+	const [appState, dispatchApp] = useReducer(reducer, initialState);
 	const [fetchedUser, setUser] = useState(null);
 	const [popout, setPopout] = useState(null);
 	const [title, setTitle] = useState('');
@@ -70,15 +89,37 @@ const App = () => {
 					</ModalPageHeader>
 				}
 			>
-				<FormLayout>
+				<FormLayout
+					onSubmit={(e) => {
+						e.preventDefault();
+						dispatchApp({
+							type: SET_HABITS, payload: {
+								habit: {
+									title: title,
+									days: days,
+									lastModified: new Date(),
+									daysComplete: 0,
+									status: 'active' // active || done
+								}
+							}
+						})
+						dispatch({type: SET_MODAL, payload: {modal: null}});
+						setDays(21);
+						setTitle('');
+					}}
+				>
 					<Input
 						required
 						type={'text'}
 						value={title}
-						onChange={(e) => {setTitle(e.currentTarget.value)}}
+						onChange={(e) => {
+							setTitle(e.currentTarget.value)
+						}}
 						top={'Название цели'}
 					/>
-					<Slider min={1} max={21} step={1} value={days} top={`Кол-во дней: ${days}`} onChange={(d) => {setDays(d)}}/>
+					<Slider min={1} max={21} step={1} value={days} top={`Кол-во дней: ${days}`} onChange={(d) => {
+						setDays(d)
+					}}/>
 					<CellButton
 						onClick={() => {
 							// dispatch({type: SET_MODAL, payload: {modal: 'add-habit'}})
@@ -101,7 +142,7 @@ const App = () => {
 				<Startup id={'startup'}/>
 			</View>
 			<View activePanel={state.panel} popout={popout} id={'home'} modal={modal}>
-				<Home id='home' fetchedUser={fetchedUser}/>
+				<Home id='home' fetchedUser={fetchedUser} habits={appState.habits}/>
 			</View>
 		</Root>
 	);
