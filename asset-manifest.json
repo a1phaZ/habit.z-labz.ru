@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.js": "/habit.z-labz.ru/static/js/main.a9ed6486.chunk.js",
+    "main.js.map": "/habit.z-labz.ru/static/js/main.a9ed6486.chunk.js.map",
+    "runtime-main.js": "/habit.z-labz.ru/static/js/runtime-main.4636e08c.js",
+    "runtime-main.js.map": "/habit.z-labz.ru/static/js/runtime-main.4636e08c.js.map",
+    "static/css/2.1e562f28.chunk.css": "/habit.z-labz.ru/static/css/2.1e562f28.chunk.css",
+    "static/js/2.1c67c626.chunk.js": "/habit.z-labz.ru/static/js/2.1c67c626.chunk.js",
+    "static/js/2.1c67c626.chunk.js.map": "/habit.z-labz.ru/static/js/2.1c67c626.chunk.js.map",
+    "index.html": "/habit.z-labz.ru/index.html",
+    "precache-manifest.c20786e92a0a538887be6fca458cc3c6.js": "/habit.z-labz.ru/precache-manifest.c20786e92a0a538887be6fca458cc3c6.js",
+    "service-worker.js": "/habit.z-labz.ru/service-worker.js",
+    "static/css/2.1e562f28.chunk.css.map": "/habit.z-labz.ru/static/css/2.1e562f28.chunk.css.map",
+    "static/js/2.1c67c626.chunk.js.LICENSE.txt": "/habit.z-labz.ru/static/js/2.1c67c626.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4636e08c.js",
+    "static/css/2.1e562f28.chunk.css",
+    "static/js/2.1c67c626.chunk.js",
+    "static/js/main.a9ed6486.chunk.js"
+  ]
+}
