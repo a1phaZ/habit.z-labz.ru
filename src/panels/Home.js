@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
@@ -7,9 +7,20 @@ import Icon24Add from '@vkontakte/icons/dist/24/add';
 import {State} from "../state";
 import {SET_MODAL} from "../state/actions";
 import HabitList from "../components/HabitList";
+import useApi from "../hooks/useApi";
 
 const Home = ({ id, habits }) => {
+	const [{response, error}, doApiFetch] = useApi();
 	const [, dispatch] = useContext(State);
+	const [needFetch, setNeedFetch] = useState(true);
+
+	useEffect(() => {
+		if (!needFetch) return;
+		doApiFetch();
+		setNeedFetch(false);
+	}, [doApiFetch, needFetch]);
+
+	console.log({response, error});
 	return (
 		<Panel id={id}>
 			<PanelHeader>Example</PanelHeader>
