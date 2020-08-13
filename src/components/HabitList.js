@@ -1,5 +1,5 @@
 import React from 'react';
-import {Banner} from "@vkontakte/vkui";
+import {Banner, InfoRow, Progress} from "@vkontakte/vkui";
 
 const HabitList = ({habits}) => {
 	return habits.map((habit, index) => {
@@ -9,8 +9,14 @@ const HabitList = ({habits}) => {
 				header={habit.title}
 				subheader={
 					<div>
-						<p>Дней подряд: <strong>{habit.daysComplete}</strong> / <strong>{habit.days}</strong></p>
-						<p>Статус: <strong>{habit.status === 'active' ? 'Активно' : 'Выполнено'}</strong></p>
+						<InfoRow header={
+							<div>
+								<p>Статус: <strong>{habit.status === 'active' ? 'Активно' : 'Выполнено'}</strong></p>
+								<p>Дней подряд: <strong>{habit.daysComplete}</strong> / <strong>{habit.days}</strong></p>
+							</div>
+						}>
+							<Progress value={(habit.daysComplete/habit.days)*100}  style={{marginTop: '1em'}}/>
+						</InfoRow>
 					</div>
 				}
 				mode={'tint'}
