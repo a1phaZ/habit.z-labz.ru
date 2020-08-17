@@ -2,10 +2,10 @@ import React from 'react';
 import {Banner, InfoRow, Progress} from "@vkontakte/vkui";
 
 const HabitList = ({habits}) => {
-	return habits.map((habit, index) => {
+	return habits.map((habit) => {
 		return (
 			<Banner
-				key={index}
+				key={habit._id}
 				header={habit.title}
 				subheader={
 					<div>

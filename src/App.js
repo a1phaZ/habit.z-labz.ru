@@ -1,4 +1,4 @@
-import React, {useState, useContext, useReducer} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import View from '@vkontakte/vkui/dist/components/View/View';
 import '@vkontakte/vkui/dist/vkui.css';
 
@@ -16,35 +16,37 @@ import {
 } from "@vkontakte/vkui";
 import Startup from "./panels/Startup";
 import Preloader from "./panels/Preloader";
-import {SET_MODAL} from "./state/actions";
+import {SET_HABITS, SET_MODAL} from "./state/actions";
 import Icon24Cancel from '@vkontakte/icons/dist/24/cancel';
 import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
 import Icon24Add from '@vkontakte/icons/dist/24/add';
+import useApi from "./hooks/useApi";
 
 const osName = platform();
-const SET_HABITS = 'SET_HABITS';
 
-const initialState = {
-	habits: []
-}
-
-const reducer = (state, action) => {
-	switch (action.type) {
-		case SET_HABITS:
-			return {
-				...state,
-				habits: [...state.habits, action.payload.habit]
-			}
-		default:
-			return state;
-	}
-}
 
 const App = () => {
 	const [state, dispatch] = useContext(State);
-	const [appState, dispatchApp] = useReducer(reducer, initialState);
 	const [title, setTitle] = useState('');
 	const [days, setDays] = useState(21);
+	const [{response, error}, doApiFetch] = useApi('/habit');
+	const [needFetch, setNeedFetch] = useState(true);
+
+	useEffect(() => {
+		if (!needFetch) return;
+		doApiFetch();
+		setNeedFetch(false);
+	}, [doApiFetch, needFetch]);
+
+	useEffect(() => {
+		if (!response) return;
+		dispatch({type: SET_HABITS, payload: {habits: response}});
+	}, [response, dispatch]);
+
+	useEffect(() => {
+		if (!error) return;
+		console.log(error);
+	}, [error]);
 
 	const modalBack = () => {
 		dispatch({type: SET_MODAL, payload: {modal: null}});
@@ -71,17 +73,11 @@ const App = () => {
 				<FormLayout
 					onSubmit={(e) => {
 						e.preventDefault();
-						dispatchApp({
-							type: SET_HABITS, payload: {
-								habit: {
-									title: title,
-									days: days,
-									lastModified: new Date(),
-									daysComplete: 0,
-									status: 'active' // active || done
-								}
-							}
-						})
+						doApiFetch({
+							method: 'POST',
+							title: title,
+							days: days
+						});
 						dispatch({type: SET_MODAL, payload: {modal: null}});
 						setDays(21);
 						setTitle('');
@@ -100,9 +96,6 @@ const App = () => {
 						setDays(d)
 					}}/>
 					<CellButton
-						onClick={() => {
-							// dispatch({type: SET_MODAL, payload: {modal: 'add-habit'}})
-						}}
 						before={<Icon24Add/>}
 					>
 						Создать цель
@@ -121,7 +114,7 @@ const App = () => {
 				<Startup id={'startup'}/>
 			</View>
 			<View activePanel={state.panel} id={'home'} modal={modal}>
-				<Home id='home' habits={appState.habits}/>
+				<Home id='home' habits={state.habits}/>
 			</View>
 		</Root>
 	);
