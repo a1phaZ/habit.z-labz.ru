@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Button, Panel, PanelHeader, PanelHeaderBack, Placeholder} from "@vkontakte/vkui";
 import {State} from "../state";
 import useApi from "../hooks/useApi";
-import {SET_HABIT_ID, SET_HISTORY_BACK} from "../state/actions";
+import {SET_CHANGE_HABIT, SET_HABIT_ID, SET_HISTORY_BACK} from "../state/actions";
 
 const HabitPage = ({id, habit, setHabit}) => {
 	const [, dispatch] = useContext(State);
@@ -47,6 +47,7 @@ const HabitPage = ({id, habit, setHabit}) => {
 					onClick={() => {
 						dispatch({type: SET_HISTORY_BACK});
 						dispatch({type: SET_HABIT_ID, payload: {habitId: null}});
+						dispatch({type: SET_CHANGE_HABIT, payload: {habit: habit}});
 					}}
 				/>
 			}

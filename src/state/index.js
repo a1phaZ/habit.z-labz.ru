@@ -5,7 +5,7 @@ import {
 	SET_HABITS,
 	SET_ERROR,
 	SET_HISTORY_BACK,
-	SET_HABIT_ID
+	SET_HABIT_ID, SET_CHANGE_HABIT
 } from "./actions";
 import React, {createContext, useReducer} from 'react';
 
@@ -65,6 +65,16 @@ const reducer = (state, action) => {
 			return {
 				...state,
 				habitId: action.payload.habitId
+			}
+		case SET_CHANGE_HABIT:
+			const habits = state.habits;
+			const index = habits.findIndex(item => {
+				return item._id === action.payload.habit._id
+			});
+			habits[index] = action.payload.habit;
+			return {
+				...state,
+				habits: [...habits]
 			}
 		case SET_ERROR:
 			return {
