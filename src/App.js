@@ -1,18 +1,21 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import View from '@vkontakte/vkui/dist/components/View/View';
 import '@vkontakte/vkui/dist/vkui.css';
 
 import Home from './panels/Home';
 import {State} from "./state";
 import {
+	CellButton,
+	FormLayout,
+	Input,
 	IOS,
 	ModalPage,
 	ModalPageHeader,
 	ModalRoot,
 	PanelHeaderButton,
+	platform, PopoutWrapper,
 	Root,
-	platform,
-	FormLayout, Input, Slider, CellButton
+	Slider
 } from "@vkontakte/vkui";
 import Startup from "./panels/Startup";
 import Preloader from "./panels/Preloader";
@@ -116,20 +119,22 @@ const App = () => {
 
 	return (
 		<InfoSnackbar>
-			<Root activeView={state.view}>
-				<View activePanel={state.panel} id={'preloader'}>
-					<Preloader id={'preloader'}/>
-				</View>
-				<View activePanel={state.panel} id={'startup'}>
-					<Startup id={'startup'}/>
-				</View>
-				<View activePanel={state.panel} id={'habit-page'}>
-					<HabitPage id={'habit-page'} habit={habit} setHabit={setHabit}/>
-				</View>
-				<View activePanel={state.panel} id={'home'} modal={modal}>
-					<Home id='home' habits={state.habits}/>
-				</View>
-			</Root>
+			<PopoutWrapper alignY="center" alignX="center">
+				<Root activeView={state.view} popout={state.popout}>
+					<View activePanel={state.panel} id={'preloader'}>
+						<Preloader id={'preloader'}/>
+					</View>
+					<View activePanel={state.panel} id={'startup'}>
+						<Startup id={'startup'}/>
+					</View>
+					<View activePanel={state.panel} id={'habit-page'}>
+						<HabitPage id={'habit-page'} habit={habit} setHabit={setHabit}/>
+					</View>
+					<View activePanel={state.panel} id={'home'} modal={modal}>
+						<Home id='home' habits={state.habits}/>
+					</View>
+				</Root>
+			</PopoutWrapper>
 		</InfoSnackbar>
 	);
 }

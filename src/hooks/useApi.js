@@ -1,8 +1,9 @@
-import {useState, useEffect, useCallback, useContext} from 'react';
+import React, {useState, useEffect, useCallback, useContext} from 'react';
 import queryString from 'query-string';
 import axios from 'axios';
 import {State} from "../state";
-import {SET_ERROR} from "../state/actions";
+import {SET_ERROR, SET_POPOUT} from "../state/actions";
+import {PopoutWrapper, ScreenSpinner} from "@vkontakte/vkui";
 
 export default url => {
 	const [isLoading, setLoading] = useState(false);
@@ -18,7 +19,8 @@ export default url => {
 		setResponse(null);
 		setError(null);
 		setLoading(true);
-	}, []);
+		dispatch({type: SET_POPOUT, payload: {popout: (<PopoutWrapper><ScreenSpinner /></PopoutWrapper>)}})
+	}, [dispatch]);
 
 	const {method = 'GET', params, ...bodyFields} = options;
 	const headers = {
@@ -41,10 +43,12 @@ export default url => {
 			await axios(axiosOptions)
 				.then((response) => {
 					setLoading(false);
+					dispatch({type: SET_POPOUT, payload: {popout: null}})
 					setResponse(response.data.data);
 				})
 				.catch((error) => {
 					setLoading(false);
+					dispatch({type: SET_POPOUT, payload: {popout: null}})
 					dispatch({type: SET_ERROR, payload: {error: error.response.data.error}});
 					setError(error.response.data.error);
 				})

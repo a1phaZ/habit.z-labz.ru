@@ -5,7 +5,7 @@ import {
 	SET_HABITS,
 	SET_ERROR,
 	SET_HISTORY_BACK,
-	SET_HABIT_ID, SET_CHANGE_HABIT
+	SET_HABIT_ID, SET_CHANGE_HABIT, SET_POPOUT
 } from "./actions";
 import React, {createContext, useReducer} from 'react';
 
@@ -15,7 +15,8 @@ const initialState = {
 	history: [],
 	activeModal: null,
 	habits: [],
-	error: null
+	error: null,
+	popout: null
 }
 
 const reducer = (state, action) => {
@@ -80,6 +81,11 @@ const reducer = (state, action) => {
 			return {
 				...state,
 				error: action.payload.error
+			}
+		case SET_POPOUT:
+			return {
+				...state,
+				popout: action.payload.popout
 			}
 		default:
 			return state;
