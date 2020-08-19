@@ -36,7 +36,7 @@ const HabitPage = ({id}) => {
 			method: 'PUT'
 		});
 		setNeedFetch(false);
-	}, [needFetch]);
+	}, [needFetch, doApiFetch]);
 
 	useEffect(() => {
 		if (!response) return;
