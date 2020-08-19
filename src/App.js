@@ -123,11 +123,11 @@ const App = () => {
 				<View activePanel={state.panel} id={'startup'}>
 					<Startup id={'startup'}/>
 				</View>
-				<View activePanel={state.panel} id={'home'} modal={modal}>
-					<Home id='home' habits={state.habits}/>
-				</View>
 				<View activePanel={state.panel} id={'habit-page'}>
 					<HabitPage id={'habit-page'} habit={habit} setHabit={setHabit}/>
+				</View>
+				<View activePanel={state.panel} id={'home'} modal={modal}>
+					<Home id='home' habits={state.habits}/>
 				</View>
 			</Root>
 		</InfoSnackbar>
