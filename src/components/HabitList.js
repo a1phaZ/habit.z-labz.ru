@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import {Banner, InfoRow, Progress} from "@vkontakte/vkui";
 import {State} from "../state";
-import {SET_VIEW} from "../state/actions";
+import {SET_HABIT_ID, SET_VIEW} from "../state/actions";
 
 const HabitList = ({habits}) => {
 	const [, dispatch] = useContext(State);
@@ -11,9 +11,9 @@ const HabitList = ({habits}) => {
 				key={habit._id}
 				header={habit.title}
 				data-id={habit._id}
-				onClick={(e) => {
-					dispatch({type: SET_VIEW, payload: { view: 'habit-page', panel: habit._id}})
-					console.log(e.currentTarget.dataset.id);
+				onClick={() => {
+					dispatch({type: SET_VIEW, payload: { view: 'habit-page', panel: 'habit-page'}});
+					dispatch({type: SET_HABIT_ID, payload: { habitId: habit._id}});
 				}}
 				subheader={
 					<div>

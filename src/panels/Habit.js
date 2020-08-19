@@ -1,16 +1,13 @@
-import React, {useContext, useState, useEffect} from 'react';
-import {Button, Panel, PanelHeader, Placeholder} from "@vkontakte/vkui";
+import React, {useContext, useEffect, useState} from 'react';
+import {Button, Panel, PanelHeader, PanelHeaderBack, Placeholder} from "@vkontakte/vkui";
 import {State} from "../state";
 import useApi from "../hooks/useApi";
+import {SET_HABIT_ID, SET_HISTORY_BACK} from "../state/actions";
 
-const HabitPage = ({id}) => {
-	const [state] = useContext(State);
-	const [{response}, doApiFetch] = useApi(`/habit/${id}`);
-	const [habit, setHabit] = useState(() => {
-		return state.habits.find((item) => {
-			return item._id === id
-		})
-	});
+const HabitPage = ({id, habit, setHabit}) => {
+	const [, dispatch] = useContext(State);
+	const [{response}, doApiFetch] = useApi(`/habit/${habit._id}`);
+
 	const [needFetch, setNeedFetch] = useState(false);
 	// const [longPress, setLongPress] = useState(false);
 	// const [pressTimer, setPressTimer] = useState(null);
@@ -41,17 +38,27 @@ const HabitPage = ({id}) => {
 	useEffect(() => {
 		if (!response) return;
 		setHabit(response);
-	}, [response]);
+	}, [response, setHabit]);
 
 	return (
 		<Panel id={id}>
-			<PanelHeader>{habit.title}</PanelHeader>
+			<PanelHeader left={
+				<PanelHeaderBack
+					onClick={() => {
+						dispatch({type: SET_HISTORY_BACK});
+						dispatch({type: SET_HABIT_ID, payload: {habitId: null}});
+					}}
+				/>
+			}
+			>
+				{habit.title}
+			</PanelHeader>
 			<Placeholder
 				header={habit.title}
 				action={
 					<Button
 						size="l"
-						onClick={()=>{
+						onClick={() => {
 							setNeedFetch(true);
 						}}
 					>

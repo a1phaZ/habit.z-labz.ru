@@ -1,9 +1,18 @@
-import {SET_VIEW, SET_PANEL, SET_MODAL, SET_HABITS, SET_ERROR} from "./actions";
+import {
+	SET_VIEW,
+	SET_PANEL,
+	SET_MODAL,
+	SET_HABITS,
+	SET_ERROR,
+	SET_HISTORY_BACK,
+	SET_HABIT_ID
+} from "./actions";
 import React, {createContext, useReducer} from 'react';
 
 const initialState = {
 	view: 'preloader',
 	panel: 'preloader',
+	history: [],
 	activeModal: null,
 	habits: [],
 	error: null
@@ -15,12 +24,32 @@ const reducer = (state, action) => {
 			return {
 				...state,
 				view: action.payload.view,
-				panel: action.payload.panel
+				panel: action.payload.panel,
+				history: [...state.history, {view: action.payload.view, panel: action.payload.panel}]
 			}
 		case SET_PANEL:
 			return {
 				...state,
-				panel: action.payload.panel
+				panel: action.payload.panel,
+				history: [...state.history, {view: state.view, panel: action.payload.panel}]
+			}
+		case SET_HISTORY_BACK:
+			const backElement = state.history[state.history.length-2];
+			if (!backElement) {
+				return {
+					...state,
+					view: 'home',
+					panel: 'home',
+					history: [{view: 'home', panel: 'home'}]
+				}
+			}
+			const newHistory = state.history;
+			newHistory.pop();
+			return {
+				...state,
+				history: [...newHistory],
+				view: backElement.view,
+				panel: backElement.panel
 			}
 		case SET_MODAL:
 			return {
@@ -31,6 +60,11 @@ const reducer = (state, action) => {
 			return {
 				...state,
 				habits: action.payload.habits
+			}
+		case SET_HABIT_ID:
+			return {
+				...state,
+				habitId: action.payload.habitId
 			}
 		case SET_ERROR:
 			return {

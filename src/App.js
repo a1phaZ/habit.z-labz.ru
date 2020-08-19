@@ -26,13 +26,13 @@ import InfoSnackbar from "./components/InfoSnackbar";
 
 const osName = platform();
 
-
 const App = () => {
 	const [state, dispatch] = useContext(State);
 	const [title, setTitle] = useState('');
 	const [days, setDays] = useState(21);
 	const [{response, error}, doApiFetch] = useApi('/habit');
 	const [needFetch, setNeedFetch] = useState(true);
+	const [habit, setHabit] = useState(null);
 
 	useEffect(() => {
 		if (!needFetch) return;
@@ -49,6 +49,13 @@ const App = () => {
 		if (!error) return;
 		console.log(error);
 	}, [error]);
+
+	useEffect(() => {
+		if (!state.habitId) return;
+		setHabit(state.habits.find((item) => {
+			return item._id === state.habitId
+		}));
+	}, [state.habitId, state.habits])
 
 	const modalBack = () => {
 		dispatch({type: SET_MODAL, payload: {modal: null}});
@@ -120,7 +127,7 @@ const App = () => {
 					<Home id='home' habits={state.habits}/>
 				</View>
 				<View activePanel={state.panel} id={'habit-page'}>
-					<HabitPage id={state.panel}/>
+					<HabitPage id={'habit-page'} habit={habit} setHabit={setHabit}/>
 				</View>
 			</Root>
 		</InfoSnackbar>
