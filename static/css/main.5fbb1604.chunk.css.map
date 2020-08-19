@@ -1,0 +1,1 @@
+{"version":3,"sources":["style.css"],"names":[],"mappings":"AAAA,cACI,oCACJ","file":"main.5fbb1604.chunk.css","sourcesContent":[".fixed-button{\r\n    background: var(--background_content);\r\n}"]}
