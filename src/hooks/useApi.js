@@ -1,12 +1,15 @@
-import {useState, useEffect, useCallback} from 'react';
+import {useState, useEffect, useCallback, useContext} from 'react';
 import queryString from 'query-string';
 import axios from 'axios';
+import {State} from "../state";
+import {SET_ERROR} from "../state/actions";
 
 export default url => {
 	const [isLoading, setLoading] = useState(false);
 	const [response, setResponse] = useState(null);
 	const [error, setError] = useState(null);
 	const [options, setOptions] = useState({});
+	const [, dispatch] = useContext(State);
 
 	const apiBase = `http://localhost/api`;
 
@@ -42,11 +45,12 @@ export default url => {
 				})
 				.catch((error) => {
 					setLoading(false);
+					dispatch({type: SET_ERROR, payload: {error: error.response.data.error}});
 					setError(error.response.data.error);
 				})
 		}
 
 		fetchData();
-	}, [isLoading, axiosOptions]);
+	}, [isLoading, axiosOptions, dispatch]);
 	return [{isLoading, response, error}, doApiFetch];
 }

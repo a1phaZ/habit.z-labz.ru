@@ -22,6 +22,7 @@ import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
 import Icon24Add from '@vkontakte/icons/dist/24/add';
 import useApi from "./hooks/useApi";
 import HabitPage from "./panels/Habit";
+import InfoSnackbar from "./components/InfoSnackbar";
 
 const osName = platform();
 
@@ -107,20 +108,22 @@ const App = () => {
 	)
 
 	return (
-		<Root activeView={state.view}>
-			<View activePanel={state.panel} id={'preloader'}>
-				<Preloader id={'preloader'}/>
-			</View>
-			<View activePanel={state.panel} id={'startup'}>
-				<Startup id={'startup'}/>
-			</View>
-			<View activePanel={state.panel} id={'home'} modal={modal}>
-				<Home id='home' habits={state.habits}/>
-			</View>
-			<View activePanel={state.panel} id={'habit-page'}>
-				<HabitPage id={state.panel}/>
-			</View>
-		</Root>
+		<InfoSnackbar>
+			<Root activeView={state.view}>
+				<View activePanel={state.panel} id={'preloader'}>
+					<Preloader id={'preloader'}/>
+				</View>
+				<View activePanel={state.panel} id={'startup'}>
+					<Startup id={'startup'}/>
+				</View>
+				<View activePanel={state.panel} id={'home'} modal={modal}>
+					<Home id='home' habits={state.habits}/>
+				</View>
+				<View activePanel={state.panel} id={'habit-page'}>
+					<HabitPage id={state.panel}/>
+				</View>
+			</Root>
+		</InfoSnackbar>
 	);
 }
 
