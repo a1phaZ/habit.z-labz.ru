@@ -1,9 +1,21 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
+import bridge from '@vkontakte/vk-bridge';
 import PropTypes from 'prop-types';
 import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
-import {CellButton, FixedLayout, FormLayout, Group} from "@vkontakte/vkui";
+import {
+	Cell,
+	CellButton, Div,
+	FixedLayout,
+	FormLayout,
+	Group, Headline,
+	List,
+	PanelHeaderContent,
+	PanelHeaderContext, Text
+} from "@vkontakte/vkui";
 import Icon24Add from '@vkontakte/icons/dist/24/add';
+import Icon16Dropdown from '@vkontakte/icons/dist/16/dropdown';
+import Icon28ShareExternalOutline from '@vkontakte/icons/dist/28/share_external_outline';
 import {State} from "../state";
 import {SET_MODAL} from "../state/actions";
 import HabitList from "../components/HabitList";
@@ -12,10 +24,38 @@ import './style.css';
 
 const Home = ({ id, habits }) => {
 	const [, dispatch] = useContext(State);
+	const [contextOpened, setContextOpened] = useState(false);
+
+	bridge.subscribe(({detail: {type, data}}) => {
+		if (type === 'VKWebAppShareResult') {
+			console.log('Успешно', data);
+		}
+	});
 
 	return (
 		<Panel id={id}  >
-			<PanelHeader>Habit</PanelHeader>
+			<PanelHeader>
+				<PanelHeaderContent
+					aside={<Icon16Dropdown style={{ transform: `rotate(${contextOpened ? '180deg' : '0'})` }} />}
+					onClick={() => {setContextOpened(!contextOpened)}}
+				>
+					Habit
+				</PanelHeaderContent>
+			</PanelHeader>
+			<PanelHeaderContext opened={contextOpened} onClose={() => {setContextOpened(!contextOpened)}}>
+				<List>
+					<Div>
+						<Headline weight={'semibold'}>О приложении</Headline>
+						<Text>Habit - Ваш личный помошник в формировании привычек. Приложение помогает развить хорошие привычки и избавиться от плохих.</Text>
+					</Div>
+					<Cell
+						before={<Icon28ShareExternalOutline />}
+						onClick={() => { bridge.send('VKWebAppShare', {'link': 'https://vk.com/app7564973'})}}
+					>
+						Поделиться приложением
+					</Cell>
+				</List>
+			</PanelHeaderContext>
 			<Group style={{paddingBottom: '60px'}} >
 				<HabitList habits={habits} />
 			</Group>
