@@ -15,7 +15,7 @@ const Home = ({ id, habits }) => {
 
 	return (
 		<Panel id={id}  >
-			<PanelHeader>Example</PanelHeader>
+			<PanelHeader>Habit</PanelHeader>
 			<Group style={{paddingBottom: '60px'}} >
 				<HabitList habits={habits} />
 			</Group>
