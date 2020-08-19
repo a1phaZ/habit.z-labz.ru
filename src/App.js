@@ -72,6 +72,7 @@ const App = () => {
 			<ModalPage
 				id={'add-habit'}
 				onClose={modalBack}
+				dynamicContentHeight
 				header={
 					<ModalPageHeader
 						left={osName !== IOS && <PanelHeaderButton onClick={modalBack}><Icon24Cancel/></PanelHeaderButton>}
