@@ -43,7 +43,6 @@ export default url => {
 			await axios(axiosOptions)
 				.then((response) => {
 					setLoading(false);
-					console.log(response);
 					dispatch({type: SET_POPOUT, payload: {popout: null}});
 					dispatch({type: SET_SUCCESS_MESSAGE, payload: {message: response.data.message}});
 					setResponse(response.data.data);

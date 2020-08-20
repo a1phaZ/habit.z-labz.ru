@@ -1,11 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, PanelHeader, PanelHeaderBack, Placeholder} from "@vkontakte/vkui";
+import {CellButton, List, PanelHeader, PanelHeaderBack} from "@vkontakte/vkui";
 import {State} from "../state";
 import useApi from "../hooks/useApi";
 import {SET_CHANGE_HABIT, SET_HABIT_ID, SET_HISTORY_BACK} from "../state/actions";
+import HabitBanner from "../components/HabitBanner";
 
-const HabitPage = ({id, habit, setHabit}) => {
-	console.log({id, habit});
+import Icon28ShareOutline from '@vkontakte/icons/dist/28/share_outline';
+import Icon28CancelCircleOutline from '@vkontakte/icons/dist/28/cancel_circle_outline';
+
+const HabitPage = ({habit, setHabit}) => {
 	const [, dispatch] = useContext(State);
 	const [{response}, doApiFetch] = useApi(`/habit/${habit._id}`);
 
@@ -38,21 +41,20 @@ const HabitPage = ({id, habit, setHabit}) => {
 			>
 				{habit.title}
 			</PanelHeader>
-			<Placeholder
-				header={habit.title}
-				action={
-					<Button
-						size="l"
-						onClick={() => {
-							setNeedFetch(true);
-						}}
-					>
-						Выполнить на сегодня
-					</Button>
-				}
-			>
-				Дней подряд: {habit.daysComplete} / {habit.days}
-			</Placeholder>
+			<HabitBanner habit={habit} dispatch={dispatch} isSingle={true} setNeedFetch={setNeedFetch}/>
+			<List>
+				<CellButton
+					before={<Icon28ShareOutline/>}
+				>
+					{habit.days !== habit.daysComplete ? 'Поделиться прогрессом' : 'Поделиться успехом'}
+				</CellButton>
+				<CellButton
+					before={<Icon28CancelCircleOutline/>}
+					mode={'danger'}
+				>
+					Удалить цель
+				</CellButton>
+			</List>
 		</>
 	)
 }
