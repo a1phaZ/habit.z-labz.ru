@@ -4,30 +4,14 @@ import '@vkontakte/vkui/dist/vkui.css';
 
 import Home from './panels/Home';
 import {State} from "./state";
-import {
-	CellButton,
-	FormLayout,
-	Input,
-	IOS,
-	ModalPage,
-	ModalPageHeader,
-	ModalRoot, Panel,
-	PanelHeaderButton,
-	platform, PopoutWrapper,
-	Root,
-	Slider
-} from "@vkontakte/vkui";
+import {Button, FormLayout, Input, ModalCard, ModalRoot, Panel, PopoutWrapper, Root, Slider} from "@vkontakte/vkui";
 import Startup from "./panels/Startup";
 import Preloader from "./panels/Preloader";
 import {SET_HABITS, SET_MODAL} from "./state/actions";
-import Icon24Cancel from '@vkontakte/icons/dist/24/cancel';
-import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
 import Icon24Add from '@vkontakte/icons/dist/24/add';
 import useApi from "./hooks/useApi";
 import HabitPage from "./panels/Habit";
 import InfoSnackbar from "./components/InfoSnackbar";
-
-const osName = platform();
 
 const App = () => {
 	const [state, dispatch] = useContext(State);
@@ -69,21 +53,14 @@ const App = () => {
 			activeModal={state.activeModal}
 			onClose={modalBack}
 		>
-			<ModalPage
+			<ModalCard
 				id={'add-habit'}
 				onClose={modalBack}
 				dynamicContentHeight
-				header={
-					<ModalPageHeader
-						left={osName !== IOS && <PanelHeaderButton onClick={modalBack}><Icon24Cancel/></PanelHeaderButton>}
-						right={osName === IOS &&
-						<PanelHeaderButton onClick={modalBack}>{osName === IOS ? 'Готово' : <Icon24Dismiss/>}</PanelHeaderButton>}
-					>
-						Создать цель
-					</ModalPageHeader>
-				}
+				header={'Создать цель'}
 			>
 				<FormLayout
+					id={'habit-add-form'}
 					onSubmit={(e) => {
 						e.preventDefault();
 						doApiFetch({
@@ -96,9 +73,6 @@ const App = () => {
 						setTitle('');
 					}}
 				>
-					<Slider min={1} max={21} step={1} value={days} top={`Кол-во дней: ${days}`} onChange={(d) => {
-						setDays(d)
-					}}/>
 					<Input
 						required
 						type={'text'}
@@ -108,14 +82,18 @@ const App = () => {
 						}}
 						top={'Название цели'}
 					/>
-
-					<CellButton
+					<Slider min={1} max={21} step={1} value={days} top={`Кол-во дней: ${days}`} onChange={(d) => {
+						setDays(d)
+					}}/>
+					<Button
 						before={<Icon24Add/>}
+						size={'xl'}
+						style={{paddingBottom: 0}}
 					>
 						Создать цель
-					</CellButton>
+					</Button>
 				</FormLayout>
-			</ModalPage>
+			</ModalCard>
 		</ModalRoot>
 	)
 
@@ -134,7 +112,7 @@ const App = () => {
 							<HabitPage habit={habit} setHabit={setHabit}/>
 						</Panel>
 					</View>
-					<View activePanel={state.panel} id={'home'} >
+					<View activePanel={state.panel} id={'home'}>
 						<Home id='home' habits={state.habits}/>
 					</View>
 				</Root>
