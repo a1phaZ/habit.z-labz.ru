@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
 import {
+	Button,
 	Cell,
 	CellButton, Div,
 	FixedLayout,
@@ -11,11 +12,12 @@ import {
 	Group, Headline,
 	List,
 	PanelHeaderContent,
-	PanelHeaderContext, Text
+	PanelHeaderContext, Placeholder, Text
 } from "@vkontakte/vkui";
 import Icon24Add from '@vkontakte/icons/dist/24/add';
 import Icon16Dropdown from '@vkontakte/icons/dist/16/dropdown';
 import Icon28ShareExternalOutline from '@vkontakte/icons/dist/28/share_external_outline';
+import Icon56DiamondOutline from '@vkontakte/icons/dist/56/diamond_outline';
 import {State} from "../state";
 import {SET_MODAL} from "../state/actions";
 import HabitList from "../components/HabitList";
@@ -56,9 +58,30 @@ const Home = ({ id, habits }) => {
 					</Cell>
 				</List>
 			</PanelHeaderContext>
-			<Group style={{paddingBottom: '60px'}} >
-				<HabitList habits={habits} />
-			</Group>
+			{habits.length === 0
+				?
+				<Placeholder
+					icon={<Icon56DiamondOutline />}
+					action={
+						<Button
+							size="l"
+							mode="tertiary"
+							onClick={()=>{
+								dispatch({type: SET_MODAL, payload: {modal: 'add-habit'}})
+							}}
+						>
+							Создать первую цель
+						</Button>
+					}
+					stretched
+				>
+					Формируйте свои привычки самостоятельно. Создайте первую цель и следуйте к ней
+				</Placeholder>
+				:
+				<Group style={{paddingBottom: '60px'}}>
+					<HabitList habits={habits}/>
+				</Group>
+			}
 			<FixedLayout
 				vertical={'bottom'}
 				className={'fixed-button'}
