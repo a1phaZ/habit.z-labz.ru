@@ -7,3 +7,4 @@ export const SET_HISTORY_BACK = 'SET_HISTORY_BACK';
 export const SET_HABIT_ID = 'SET_HABIT_ID';
 export const SET_CHANGE_HABIT = 'SET_CHANGE_HABIT';
 export const SET_POPOUT = 'SET_POPOUT';
+export const SET_SUCCESS_MESSAGE = 'SET_SUCCESS_MESSAGE';

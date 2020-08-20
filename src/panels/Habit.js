@@ -1,31 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Panel, PanelHeader, PanelHeaderBack, Placeholder} from "@vkontakte/vkui";
+import {Button, PanelHeader, PanelHeaderBack, Placeholder} from "@vkontakte/vkui";
 import {State} from "../state";
 import useApi from "../hooks/useApi";
 import {SET_CHANGE_HABIT, SET_HABIT_ID, SET_HISTORY_BACK} from "../state/actions";
 
 const HabitPage = ({id, habit, setHabit}) => {
+	console.log({id, habit});
 	const [, dispatch] = useContext(State);
 	const [{response}, doApiFetch] = useApi(`/habit/${habit._id}`);
 
 	const [needFetch, setNeedFetch] = useState(false);
-	// const [longPress, setLongPress] = useState(false);
-	// const [pressTimer, setPressTimer] = useState(null);
-	//
-	// const pressStart = () => {
-	// 	if (pressTimer === null) {
-	// 		setPressTimer(setTimeout(() => {
-	// 			setLongPress(true);
-	// 		}, 1000));
-	// 	}
-	// }
-	// const pressCancel = () => {
-	// 	if (pressTimer !== null) {
-	// 		clearTimeout(pressTimer);
-	// 	}
-	// 	setPressTimer(null);
-	// 	setLongPress(false);
-	// }
 
 	useEffect(() => {
 		if (!needFetch) return;
@@ -41,7 +25,7 @@ const HabitPage = ({id, habit, setHabit}) => {
 	}, [response, setHabit]);
 
 	return (
-		<Panel id={id}>
+		<>
 			<PanelHeader left={
 				<PanelHeaderBack
 					onClick={() => {
@@ -69,7 +53,7 @@ const HabitPage = ({id, habit, setHabit}) => {
 			>
 				Дней подряд: {habit.daysComplete} / {habit.days}
 			</Placeholder>
-		</Panel>
+		</>
 	)
 }
 

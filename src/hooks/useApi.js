@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback, useContext} from 'react';
 import queryString from 'query-string';
 import axios from 'axios';
 import {State} from "../state";
-import {SET_ERROR, SET_POPOUT} from "../state/actions";
+import {SET_ERROR, SET_POPOUT, SET_SUCCESS_MESSAGE} from "../state/actions";
 import {PopoutWrapper, ScreenSpinner} from "@vkontakte/vkui";
 
 export default url => {
@@ -43,7 +43,9 @@ export default url => {
 			await axios(axiosOptions)
 				.then((response) => {
 					setLoading(false);
-					dispatch({type: SET_POPOUT, payload: {popout: null}})
+					console.log(response);
+					dispatch({type: SET_POPOUT, payload: {popout: null}});
+					dispatch({type: SET_SUCCESS_MESSAGE, payload: {message: response.data.message}});
 					setResponse(response.data.data);
 				})
 				.catch((error) => {

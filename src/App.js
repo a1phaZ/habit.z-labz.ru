@@ -11,7 +11,7 @@ import {
 	IOS,
 	ModalPage,
 	ModalPageHeader,
-	ModalRoot,
+	ModalRoot, Panel,
 	PanelHeaderButton,
 	platform, PopoutWrapper,
 	Root,
@@ -96,6 +96,9 @@ const App = () => {
 						setTitle('');
 					}}
 				>
+					<Slider min={1} max={21} step={1} value={days} top={`Кол-во дней: ${days}`} onChange={(d) => {
+						setDays(d)
+					}}/>
 					<Input
 						required
 						type={'text'}
@@ -105,9 +108,7 @@ const App = () => {
 						}}
 						top={'Название цели'}
 					/>
-					<Slider min={1} max={21} step={1} value={days} top={`Кол-во дней: ${days}`} onChange={(d) => {
-						setDays(d)
-					}}/>
+
 					<CellButton
 						before={<Icon24Add/>}
 					>
@@ -121,7 +122,7 @@ const App = () => {
 	return (
 		<InfoSnackbar>
 			<PopoutWrapper alignY="center" alignX="center">
-				<Root activeView={state.view} popout={state.popout}>
+				<Root activeView={state.view} popout={state.popout} modal={modal}>
 					<View activePanel={state.panel} id={'preloader'}>
 						<Preloader id={'preloader'}/>
 					</View>
@@ -129,9 +130,11 @@ const App = () => {
 						<Startup id={'startup'}/>
 					</View>
 					<View activePanel={state.panel} id={'habit-page'}>
-						<HabitPage id={'habit-page'} habit={habit} setHabit={setHabit}/>
+						<Panel id={'habit-page'}>
+							<HabitPage habit={habit} setHabit={setHabit}/>
+						</Panel>
 					</View>
-					<View activePanel={state.panel} id={'home'} modal={modal}>
+					<View activePanel={state.panel} id={'home'} >
 						<Home id='home' habits={state.habits}/>
 					</View>
 				</Root>
