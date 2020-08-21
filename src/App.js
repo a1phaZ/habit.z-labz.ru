@@ -78,9 +78,12 @@ const App = () => {
 						type={'text'}
 						value={title}
 						onChange={(e) => {
-							setTitle(e.currentTarget.value)
+							if (e.currentTarget.value.length <= 20) {
+								setTitle(e.currentTarget.value)
+							}
 						}}
 						top={'Название цели'}
+						bottom={`Введено: ${title.length} из 20`}
 					/>
 					<Slider min={1} max={21} step={1} value={days} top={`Кол-во дней: ${days}`} onChange={(d) => {
 						setDays(d)
