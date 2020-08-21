@@ -7,11 +7,12 @@ import {State} from "./state";
 import {Button, FormLayout, Input, ModalCard, ModalRoot, Panel, PopoutWrapper, Root, Slider} from "@vkontakte/vkui";
 import Startup from "./panels/Startup";
 import Preloader from "./panels/Preloader";
-import {SET_HABITS, SET_MODAL} from "./state/actions";
+import {SET_HABITS, SET_MODAL, SET_SUCCESS_MESSAGE} from "./state/actions";
 import Icon24Add from '@vkontakte/icons/dist/24/add';
 import useApi from "./hooks/useApi";
 import HabitPage from "./panels/Habit";
 import InfoSnackbar from "./components/InfoSnackbar";
+import bridge from "@vkontakte/vk-bridge";
 
 const App = () => {
 	const [state, dispatch] = useContext(State);
@@ -20,6 +21,12 @@ const App = () => {
 	const [{response, error}, doApiFetch] = useApi('/habit');
 	const [needFetch, setNeedFetch] = useState(true);
 	const [habit, setHabit] = useState(null);
+
+	bridge.subscribe(({detail: {type}}) => {
+		if (type === 'VKWebAppShareResult' || type === 'VKWebAppShowWallPostBoxResult') {
+			dispatch({type: SET_SUCCESS_MESSAGE, payload: {message: 'Запись опубликована'}});
+		}
+	});
 
 	useEffect(() => {
 		if (!needFetch) return;

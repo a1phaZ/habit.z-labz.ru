@@ -6,53 +6,58 @@ import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader
 import {
 	Button,
 	Cell,
-	CellButton, Div,
+	CellButton,
+	Div,
 	FixedLayout,
 	FormLayout,
-	Group, Headline,
+	Group,
+	Headline,
 	List,
 	PanelHeaderContent,
-	PanelHeaderContext, Placeholder, Text
+	PanelHeaderContext,
+	Placeholder,
+	Text
 } from "@vkontakte/vkui";
 import Icon24Add from '@vkontakte/icons/dist/24/add';
 import Icon16Dropdown from '@vkontakte/icons/dist/16/dropdown';
 import Icon28ShareExternalOutline from '@vkontakte/icons/dist/28/share_external_outline';
 import Icon56DiamondOutline from '@vkontakte/icons/dist/56/diamond_outline';
 import {State} from "../state";
-import {SET_MODAL, SET_SUCCESS_MESSAGE} from "../state/actions";
+import {SET_MODAL} from "../state/actions";
 import HabitList from "../components/HabitList";
 
 import './style.css';
 
-const Home = ({ id, habits }) => {
+const Home = ({id, habits}) => {
 	const [, dispatch] = useContext(State);
 	const [contextOpened, setContextOpened] = useState(false);
 
-	bridge.subscribe(({detail: {type}}) => {
-		if (type === 'VKWebAppShareResult') {
-			dispatch({type: SET_SUCCESS_MESSAGE, payload: {message: 'Запись опубликована'}});
-		}
-	});
-
 	return (
-		<Panel id={id}  >
+		<Panel id={id}>
 			<PanelHeader>
 				<PanelHeaderContent
-					aside={<Icon16Dropdown style={{ transform: `rotate(${contextOpened ? '180deg' : '0'})` }} />}
-					onClick={() => {setContextOpened(!contextOpened)}}
+					aside={<Icon16Dropdown style={{transform: `rotate(${contextOpened ? '180deg' : '0'})`}}/>}
+					onClick={() => {
+						setContextOpened(!contextOpened)
+					}}
 				>
 					Habit
 				</PanelHeaderContent>
 			</PanelHeader>
-			<PanelHeaderContext opened={contextOpened} onClose={() => {setContextOpened(!contextOpened)}}>
+			<PanelHeaderContext opened={contextOpened} onClose={() => {
+				setContextOpened(!contextOpened)
+			}}>
 				<List>
 					<Div>
 						<Headline weight={'semibold'}>О приложении</Headline>
-						<Text>Habit - Ваш личный помошник в формировании привычек. Приложение помогает развить хорошие привычки и избавиться от плохих.</Text>
+						<Text>Habit - Ваш личный помошник в формировании привычек. Приложение помогает развить хорошие привычки и
+							избавиться от плохих.</Text>
 					</Div>
 					<Cell
-						before={<Icon28ShareExternalOutline />}
-						onClick={() => { bridge.send('VKWebAppShare', {'link': 'https://vk.com/app7564973'})}}
+						before={<Icon28ShareExternalOutline/>}
+						onClick={() => {
+							bridge.send('VKWebAppShare', {'link': 'https://vk.com/app7564973'})
+						}}
 					>
 						Поделиться приложением
 					</Cell>
@@ -61,12 +66,12 @@ const Home = ({ id, habits }) => {
 			{habits.length === 0
 				?
 				<Placeholder
-					icon={<Icon56DiamondOutline />}
+					icon={<Icon56DiamondOutline/>}
 					action={
 						<Button
 							size="l"
 							mode="tertiary"
-							onClick={()=>{
+							onClick={() => {
 								dispatch({type: SET_MODAL, payload: {modal: 'add-habit'}})
 							}}
 						>

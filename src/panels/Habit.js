@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
+import bridge from '@vkontakte/vk-bridge';
 import {Alert, CellButton, List, PanelHeader, PanelHeaderBack} from "@vkontakte/vkui";
 import {State} from "../state";
 import useApi from "../hooks/useApi";
@@ -29,6 +30,12 @@ const HabitPage = ({habit, setHabit}) => {
 		// setHabit(response);
 	}, [response, dispatch]);
 
+	const message = habit?.days !== habit?.daysComplete
+		?
+		`Успешно иду к своей цели ${habit.title}. Уже ${habit.daysComplete} дней подряд из ${habit.days}. https://vk.com/app7564973`
+		:
+		`Успешно выполнил поставленую цель ${habit.title}. https://vk.com/app7564973`
+
 	return (
 		<>
 			<PanelHeader left={
@@ -47,6 +54,9 @@ const HabitPage = ({habit, setHabit}) => {
 			<List>
 				<CellButton
 					before={<Icon28ShareOutline/>}
+					onClick={() => {
+						bridge.send('VKWebAppShowWallPostBox', {message: message})
+					}}
 				>
 					{habit?.days !== habit?.daysComplete ? 'Поделиться прогрессом' : 'Поделиться успехом'}
 				</CellButton>
