@@ -18,7 +18,7 @@ const App = () => {
 	const [state, dispatch] = useContext(State);
 	const [title, setTitle] = useState('');
 	const [days, setDays] = useState(21);
-	const [{response, error}, doApiFetch] = useApi('/habit');
+	const [{response}, doApiFetch] = useApi('/habit');
 	const [needFetch, setNeedFetch] = useState(true);
 	const [habit, setHabit] = useState(null);
 
@@ -38,11 +38,6 @@ const App = () => {
 		if (!response) return;
 		dispatch({type: SET_HABITS, payload: {habits: response}});
 	}, [response, dispatch]);
-
-	useEffect(() => {
-		if (!error) return;
-		console.log(error);
-	}, [error]);
 
 	useEffect(() => {
 		if (!state.habitId) return;
