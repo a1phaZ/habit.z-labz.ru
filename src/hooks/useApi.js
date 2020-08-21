@@ -12,7 +12,7 @@ export default url => {
 	const [options, setOptions] = useState({});
 	const [, dispatch] = useContext(State);
 
-	const apiBase = `http://localhost/api`;
+	const apiBase = process.env.REACT_APP_BASEURL;
 
 	const doApiFetch = useCallback((options = {}) => {
 		setOptions(options);
