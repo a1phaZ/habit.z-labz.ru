@@ -43,15 +43,16 @@ export default url => {
 			await axios(axiosOptions)
 				.then((response) => {
 					setLoading(false);
+					setResponse(response.data.data);
 					dispatch({type: SET_POPOUT, payload: {popout: null}});
 					dispatch({type: SET_SUCCESS_MESSAGE, payload: {message: response.data.message}});
-					setResponse(response.data.data);
 				})
 				.catch((error) => {
 					setLoading(false);
+					let e = error?.response ? error.response.data.error : new Error('Проблемы с подключением к API');
+					setError(e);
 					dispatch({type: SET_POPOUT, payload: {popout: null}})
-					dispatch({type: SET_ERROR, payload: {error: error.response.data.error}});
-					setError(error.response.data.error);
+					dispatch({type: SET_ERROR, payload: {error: e}});
 				})
 		}
 
