@@ -19,7 +19,7 @@ import Icon16Dropdown from '@vkontakte/icons/dist/16/dropdown';
 import Icon28ShareExternalOutline from '@vkontakte/icons/dist/28/share_external_outline';
 import Icon56DiamondOutline from '@vkontakte/icons/dist/56/diamond_outline';
 import {State} from "../state";
-import {SET_MODAL} from "../state/actions";
+import {SET_MODAL, SET_SUCCESS_MESSAGE} from "../state/actions";
 import HabitList from "../components/HabitList";
 
 import './style.css';
@@ -28,9 +28,9 @@ const Home = ({ id, habits }) => {
 	const [, dispatch] = useContext(State);
 	const [contextOpened, setContextOpened] = useState(false);
 
-	bridge.subscribe(({detail: {type, data}}) => {
+	bridge.subscribe(({detail: {type}}) => {
 		if (type === 'VKWebAppShareResult') {
-			console.log('Успешно', data);
+			dispatch({type: SET_SUCCESS_MESSAGE, payload: {message: 'Запись опубликована'}});
 		}
 	});
 
