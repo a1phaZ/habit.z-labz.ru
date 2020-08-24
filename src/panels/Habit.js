@@ -32,9 +32,9 @@ const HabitPage = ({habit, setHabit}) => {
 
 	const message = habit?.days !== habit?.daysComplete
 		?
-		`Успешно иду к своей цели ${habit.title}. Уже ${habit.daysComplete} дней подряд из ${habit.days}. https://vk.com/app7564973`
+		`Успешно иду к своей цели ${habit?.title}. Уже ${habit?.daysComplete} дней подряд из ${habit?.days}. https://vk.com/app7564973`
 		:
-		`Успешно выполнил поставленую цель ${habit.title}. https://vk.com/app7564973`
+		`Успешно выполнил поставленую цель ${habit?.title}. https://vk.com/app7564973`
 
 	return (
 		<>
