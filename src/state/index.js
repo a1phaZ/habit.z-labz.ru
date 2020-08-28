@@ -23,6 +23,7 @@ const initialState = {
 const reducer = (state, action) => {
 	switch (action.type) {
 		case SET_VIEW:
+			window.history.pushState({view: state.view, panel: state.panel}, `${state.view}.${state.panel}`, window.location.search);
 			return {
 				...state,
 				view: action.payload.view,
@@ -30,6 +31,7 @@ const reducer = (state, action) => {
 				history: [...state.history, {view: action.payload.view, panel: action.payload.panel}]
 			}
 		case SET_PANEL:
+			window.history.pushState({view: state.view, panel: state.panel}, `${state.view}.${state.panel}`, window.location.search);
 			return {
 				...state,
 				panel: action.payload.panel,

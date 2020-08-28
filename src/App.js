@@ -4,10 +4,20 @@ import '@vkontakte/vkui/dist/vkui.css';
 
 import Home from './panels/Home';
 import {State} from "./state";
-import {Button, FormLayout, Input, ModalCard, ModalRoot, Panel, PopoutWrapper, Root, Slider} from "@vkontakte/vkui";
+import {
+	Button,
+	FormLayout,
+	Input,
+	ModalCard,
+	ModalRoot,
+	Panel,
+	PopoutWrapper,
+	Root,
+	Slider
+} from "@vkontakte/vkui";
 import Startup from "./panels/Startup";
 import Preloader from "./panels/Preloader";
-import {SET_HABITS, SET_MODAL, SET_SUCCESS_MESSAGE} from "./state/actions";
+import {SET_HABITS, SET_HISTORY_BACK, SET_MODAL, SET_SUCCESS_MESSAGE} from "./state/actions";
 import Icon24Add from '@vkontakte/icons/dist/24/add';
 import useApi from "./hooks/useApi";
 import HabitPage from "./panels/Habit";
@@ -49,6 +59,14 @@ const App = () => {
 	const modalBack = () => {
 		dispatch({type: SET_MODAL, payload: {modal: null}});
 	}
+
+	useEffect(() => {
+		window.onpopstate = () => {
+			if (state.view !== 'home' && state.panel !== 'home') {
+				dispatch({type: SET_HISTORY_BACK});
+			}
+		}
+	}, [dispatch, state.panel, state.view]);
 
 	const modal = (
 		<ModalRoot
