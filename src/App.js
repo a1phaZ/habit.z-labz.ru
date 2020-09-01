@@ -5,7 +5,7 @@ import '@vkontakte/vkui/dist/vkui.css';
 import Home from './panels/Home';
 import {State} from "./state";
 import {
-	Button,
+	Button, Checkbox,
 	FormLayout,
 	Input,
 	ModalCard,
@@ -28,6 +28,15 @@ const App = () => {
 	const [state, dispatch] = useContext(State);
 	const [title, setTitle] = useState('');
 	const [days, setDays] = useState(21);
+	const [needNotification, setNeedNotification] = useState(false);
+	const [notificationTime, setNotificationTime] = useState(() => {
+		const date = new Date();
+		const h = date.getHours();
+		const m = date.getMinutes();
+		let timeStr = h < 10 ? `0${h}:` : `${h}:`;
+		timeStr += m < 10 ? `0${m}` : m;
+		return timeStr;
+	})
 	const [{response}, doApiFetch] = useApi('/habit');
 	const [needFetch, setNeedFetch] = useState(true);
 	const [habit, setHabit] = useState(null);
@@ -86,9 +95,12 @@ const App = () => {
 						doApiFetch({
 							method: 'POST',
 							title: title,
-							days: days
+							days: days,
+							time: needNotification ? notificationTime : null,
+							timeZoneOffset: new Date().getTimezoneOffset()
 						});
 						dispatch({type: SET_MODAL, payload: {modal: null}});
+						setNeedNotification(false);
 						setDays(21);
 						setTitle('');
 					}}
@@ -108,6 +120,21 @@ const App = () => {
 					<Slider min={1} max={21} step={1} value={days} top={`Кол-во дней: ${days}`} onChange={(d) => {
 						setDays(d)
 					}}/>
+					<Checkbox
+						type={'checkbox'}
+						value={needNotification}
+						onChange={(e) => {
+							setNeedNotification(e.currentTarget.checked);
+						}}
+					>Включить оповещения</Checkbox>
+					<Input
+						type={'time'}
+						value={notificationTime}
+						disabled={!needNotification}
+						onChange={(e) => {
+							setNotificationTime(e.currentTarget.value);
+						}}
+					/>
 					<Button
 						before={<Icon24Add/>}
 						size={'xl'}

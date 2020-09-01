@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {SET_HABIT_ID, SET_VIEW} from "../state/actions";
 import {Banner, Button, InfoRow, Progress} from "@vkontakte/vkui";
 import useApi from "../hooks/useApi";
+import Icon24NotificationOutline from '@vkontakte/icons/dist/24/notification_outline';
 
 const HabitBanner = ({habit, dispatch, isSingle = false, setHabit = () => {}}) => {
 	const [{response}, doApiFetch] = useApi(`/habit/${habit?._id}`);
@@ -39,6 +40,16 @@ const HabitBanner = ({habit, dispatch, isSingle = false, setHabit = () => {}}) =
 						<div>
 							<p>Статус: <strong>{habit?.status === 'active' ? 'Активно' : 'Выполнено'}</strong></p>
 							<p>Дней подряд: <strong>{habit?.daysComplete}</strong> / <strong>{habit?.days}</strong></p>
+							{
+								habit?.notification
+								&&
+								<div style={{display: 'flex', alignItems: 'center'}}>
+									<Icon24NotificationOutline/>
+									<p style={{margin: 0}}>
+										{habit?.notification}
+									</p>
+								</div>
+							}
 						</div>
 					}>
 						<Progress value={(habit?.daysComplete/habit?.days)*100}  style={{marginTop: '1em'}}/>
