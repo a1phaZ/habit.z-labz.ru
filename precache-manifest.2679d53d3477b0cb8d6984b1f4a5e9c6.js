@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "30d9797e94408f9bb8bbeb39afe0d98d",
+    "revision": "fa42e00812ede3d3c377d98feaaa64f1",
     "url": "/habit.z-labz.ru/index.html"
   },
   {
-    "revision": "827a49ce215e37e5b24f",
+    "revision": "37790c194630e13a625c",
     "url": "/habit.z-labz.ru/static/css/2.1e562f28.chunk.css"
   },
   {
-    "revision": "223aad38c47265138b4a",
+    "revision": "2a6bba4ece252c7c12bd",
     "url": "/habit.z-labz.ru/static/css/main.5fbb1604.chunk.css"
   },
   {
-    "revision": "827a49ce215e37e5b24f",
-    "url": "/habit.z-labz.ru/static/js/2.17bf6111.chunk.js"
+    "revision": "37790c194630e13a625c",
+    "url": "/habit.z-labz.ru/static/js/2.d3c526b4.chunk.js"
   },
   {
     "revision": "e88a3e95b5364d46e95b35ae8c0dc27d",
-    "url": "/habit.z-labz.ru/static/js/2.17bf6111.chunk.js.LICENSE.txt"
+    "url": "/habit.z-labz.ru/static/js/2.d3c526b4.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "223aad38c47265138b4a",
-    "url": "/habit.z-labz.ru/static/js/main.4aefee2a.chunk.js"
+    "revision": "2a6bba4ece252c7c12bd",
+    "url": "/habit.z-labz.ru/static/js/main.325eddb4.chunk.js"
   },
   {
     "revision": "5731f99fbec715f635a5",
