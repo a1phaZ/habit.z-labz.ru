@@ -36,16 +36,14 @@ export default url => {
 	}
 
 	useEffect(() => {
-
 		if (!isLoading) return;
-
 		const fetchData = async () => {
-			await axios(axiosOptions)
-				.then((response) => {
-					setLoading(false);
-					setResponse(response.data.data);
-					dispatch({type: SET_POPOUT, payload: {popout: null}});
-					dispatch({type: SET_SUCCESS_MESSAGE, payload: {message: response.data.message}});
+			await setLoading(false);
+			return await axios(axiosOptions)
+				.then(async(response) => {
+					await setResponse(response.data.data);
+					await dispatch({type: SET_POPOUT, payload: {popout: null}});
+					await dispatch({type: SET_SUCCESS_MESSAGE, payload: {message: response.data.message}});
 				})
 				.catch((error) => {
 					setLoading(false);
