@@ -5,7 +5,6 @@ import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
 import {
 	Button,
-	Cell,
 	CellButton,
 	Div,
 	FixedLayout,
@@ -22,6 +21,8 @@ import Icon24Add from '@vkontakte/icons/dist/24/add';
 import Icon16Dropdown from '@vkontakte/icons/dist/16/dropdown';
 import Icon28ShareExternalOutline from '@vkontakte/icons/dist/28/share_external_outline';
 import Icon56DiamondOutline from '@vkontakte/icons/dist/56/diamond_outline';
+import Icon28NotificationDisableOutline from '@vkontakte/icons/dist/28/notification_disable_outline';
+import Icon28Notifications from '@vkontakte/icons/dist/28/notifications';
 import {State} from "../state";
 import {SET_MODAL} from "../state/actions";
 import HabitList from "../components/HabitList";
@@ -29,7 +30,7 @@ import HabitList from "../components/HabitList";
 import './style.css';
 
 const Home = ({id, habits}) => {
-	const [, dispatch] = useContext(State);
+	const [state, dispatch] = useContext(State);
 	const [contextOpened, setContextOpened] = useState(false);
 
 	return (
@@ -53,14 +54,34 @@ const Home = ({id, habits}) => {
 						<Text>Habit - Ваш личный помошник в формировании привычек. Приложение помогает развить хорошие привычки и
 							избавиться от плохих.</Text>
 					</Div>
-					<Cell
+					<CellButton
 						before={<Icon28ShareExternalOutline/>}
 						onClick={() => {
 							bridge.send('VKWebAppShare', {'link': 'https://vk.com/app7564973'})
 						}}
 					>
 						Поделиться приложением
-					</Cell>
+					</CellButton>
+					{
+						state.allowNotifications ?
+							<CellButton
+								before={<Icon28NotificationDisableOutline/>}
+								onClick={() => {
+									bridge.send('VKWebAppDenyNotifications');
+								}}
+							>
+								Отключить уведомления
+							</CellButton>
+							:
+							<CellButton
+								before={<Icon28Notifications/>}
+								onClick={() => {
+									bridge.send('VKWebAppAllowNotifications');
+								}}
+							>
+								Включить уведомления
+							</CellButton>
+					}
 				</List>
 			</PanelHeaderContext>
 			{habits.length === 0
@@ -87,21 +108,23 @@ const Home = ({id, habits}) => {
 					<HabitList habits={habits}/>
 				</Group>
 			}
-			<FixedLayout
-				vertical={'bottom'}
-				className={'fixed-button'}
-			>
-				<FormLayout>
-					<CellButton
-						onClick={() => {
-							dispatch({type: SET_MODAL, payload: {modal: 'add-habit'}})
-						}}
-						before={<Icon24Add/>}
-					>
-						Создать цель
-					</CellButton>
-				</FormLayout>
-			</FixedLayout>
+			{habits.length !==0 &&
+				<FixedLayout
+					vertical={'bottom'}
+					className={'fixed-button'}
+				>
+					<FormLayout>
+						<CellButton
+							onClick={() => {
+								dispatch({type: SET_MODAL, payload: {modal: 'add-habit'}})
+							}}
+							before={<Icon24Add/>}
+						>
+							Создать цель
+						</CellButton>
+					</FormLayout>
+				</FixedLayout>
+			}
 		</Panel>
 	)
 };
