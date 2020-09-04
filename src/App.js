@@ -17,12 +17,29 @@ import {
 } from "@vkontakte/vkui";
 import Startup from "./panels/Startup";
 import Preloader from "./panels/Preloader";
-import {SET_HABITS, SET_HISTORY_BACK, SET_MODAL, SET_SUCCESS_MESSAGE} from "./state/actions";
-import Icon24Add from '@vkontakte/icons/dist/24/add';
+import {
+	SET_ALLOW_NOTIFICATIONS,
+	SET_DENY_NOTIFICATIONS,
+	SET_HABITS,
+	SET_HISTORY_BACK,
+	SET_MODAL,
+	SET_SUCCESS_MESSAGE
+} from "./state/actions";
+import Icon28AddSquareOutline from '@vkontakte/icons/dist/28/add_square_outline';
+import Icon28ListCheckOutline from '@vkontakte/icons/dist/28/list_check_outline';
 import useApi from "./hooks/useApi";
 import HabitPage from "./panels/Habit";
 import InfoSnackbar from "./components/InfoSnackbar";
 import bridge from "@vkontakte/vk-bridge";
+
+const getTime = () => {
+	const date = new Date();
+	const h = date.getHours();
+	const m = date.getMinutes();
+	let timeStr = h < 10 ? `0${h}:` : `${h}:`;
+	timeStr += m < 10 ? `0${m}` : m;
+	return timeStr;
+}
 
 const App = () => {
 	const [state, dispatch] = useContext(State);
@@ -30,14 +47,10 @@ const App = () => {
 	const [days, setDays] = useState(21);
 	const [needNotification, setNeedNotification] = useState(false);
 	const [notificationTime, setNotificationTime] = useState(() => {
-		const date = new Date();
-		const h = date.getHours();
-		const m = date.getMinutes();
-		let timeStr = h < 10 ? `0${h}:` : `${h}:`;
-		timeStr += m < 10 ? `0${m}` : m;
-		return timeStr;
-	})
-	const [{response}, doApiFetch] = useApi('/habit');
+		return getTime();
+	});
+	const [apiStr, setApiStr] = useState('/habit');
+	const [{response}, doApiFetch] = useApi(apiStr);
 	const [needFetch, setNeedFetch] = useState(true);
 	const [habit, setHabit] = useState(null);
 
@@ -45,7 +58,31 @@ const App = () => {
 		if (type === 'VKWebAppShareResult' || type === 'VKWebAppShowWallPostBoxResult') {
 			dispatch({type: SET_SUCCESS_MESSAGE, payload: {message: 'Запись опубликована'}});
 		}
+		if (type === 'VKWebAppAllowNotificationsResult') {
+			dispatch({type: SET_ALLOW_NOTIFICATIONS});
+		}
+		if (type === 'VKWebAppDenyNotificationsResult') {
+			dispatch({type: SET_DENY_NOTIFICATIONS});
+		}
 	});
+
+	useEffect(() => {
+		if (!habit) {
+			setTitle('');
+			setDays(21);
+			setNeedNotification(false);
+			setNotificationTime(() => {
+				return getTime();
+			});
+		} else {
+			const time = getTime();
+			setTitle(habit?.title);
+			setDays(habit?.days);
+			setNeedNotification(!!habit?.notification);
+			setNotificationTime(habit?.notification || time);
+		}
+
+	}, [habit]);
 
 	useEffect(() => {
 		if (!needFetch) return;
@@ -92,17 +129,20 @@ const App = () => {
 					id={'habit-add-form'}
 					onSubmit={(e) => {
 						e.preventDefault();
+						setApiStr(habit ? `/habit/${habit?._id}` : '/habit');
 						doApiFetch({
-							method: 'POST',
+							method: habit ? 'PATCH' : 'POST',
 							title: title,
 							days: days,
 							time: needNotification ? notificationTime : null,
 							timeZoneOffset: new Date().getTimezoneOffset()
 						});
 						dispatch({type: SET_MODAL, payload: {modal: null}});
-						setNeedNotification(false);
-						setDays(21);
-						setTitle('');
+						if (!habit) {
+							setNeedNotification(false);
+							setDays(21);
+							setTitle('');
+						}
 					}}
 				>
 					<Input
@@ -122,8 +162,18 @@ const App = () => {
 					}}/>
 					<Checkbox
 						type={'checkbox'}
-						value={needNotification}
+						checked={needNotification}
 						onChange={(e) => {
+							const {
+								currentTarget: {
+									checked
+								}
+							} = e;
+							if (checked) {
+								if (!state.allowNotifications){
+									bridge.send('VKWebAppAllowNotifications');
+								}
+							}
 							setNeedNotification(e.currentTarget.checked);
 						}}
 					>Включить оповещения</Checkbox>
@@ -136,11 +186,11 @@ const App = () => {
 						}}
 					/>
 					<Button
-						before={<Icon24Add/>}
+						before={habit ? <Icon28ListCheckOutline/> : <Icon28AddSquareOutline/>}
 						size={'xl'}
 						style={{paddingBottom: 0}}
 					>
-						Создать цель
+						{habit ? 'Обновить цель' : 'Создать цель'}
 					</Button>
 				</FormLayout>
 			</ModalCard>
