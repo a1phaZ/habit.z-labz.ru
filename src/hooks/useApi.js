@@ -10,9 +10,9 @@ export default url => {
 	const [response, setResponse] = useState(null);
 	const [error, setError] = useState(null);
 	const [options, setOptions] = useState({});
-	const [, dispatch] = useContext(State);
+	const [state, dispatch] = useContext(State);
 
-	const apiBase = process.env.REACT_APP_BASEURL;
+	const apiBase = process.env.NODE_ENV !== 'development' ? process.env.REACT_APP_BASEURL : process.env.REACT_APP_BASEURL_DEV;
 
 	const doApiFetch = useCallback((options = {}) => {
 		setOptions(options);
@@ -26,12 +26,13 @@ export default url => {
 	const headers = {
 		'Content-Type': 'application/json',
 	}
+	const { allowNotifications } = state;
 	const axiosOptions = {
 		method: method,
 		baseURL: apiBase,
 		url,
 		headers,
-		params: params ? {...params, ...queryString.parse(window.location.search)} : {...queryString.parse(window.location.search)},
+		params: params ? {...params, ...queryString.parse(window.location.search), allowNotifications} : {...queryString.parse(window.location.search), allowNotifications},
 		data: method !== 'GET' ? bodyFields : null,
 	}
 
