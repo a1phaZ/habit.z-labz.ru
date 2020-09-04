@@ -5,8 +5,9 @@ import {
 	SET_HABITS,
 	SET_ERROR,
 	SET_HISTORY_BACK,
-	SET_HABIT_ID, SET_CHANGE_HABIT, SET_POPOUT, SET_SUCCESS_MESSAGE
+	SET_HABIT_ID, SET_CHANGE_HABIT, SET_POPOUT, SET_SUCCESS_MESSAGE, SET_ALLOW_NOTIFICATIONS, SET_DENY_NOTIFICATIONS
 } from "./actions";
+import queryString from "query-string";
 import React, {createContext, useReducer} from 'react';
 
 const initialState = {
@@ -17,7 +18,8 @@ const initialState = {
 	habits: [],
 	error: null,
 	successMessage: null,
-	popout: null
+	popout: null,
+	allowNotifications: queryString.parse(window.location.search).vk_are_notifications_enabled === '1'
 }
 
 const reducer = (state, action) => {
@@ -73,7 +75,7 @@ const reducer = (state, action) => {
 		case SET_CHANGE_HABIT:
 			const habits = state.habits;
 			const index = habits.findIndex(item => {
-				return item._id === action.payload.habit._id
+				return item._id === action.payload.habit?._id
 			});
 			habits[index] = action.payload.habit;
 			return {
@@ -94,6 +96,16 @@ const reducer = (state, action) => {
 			return {
 				...state,
 				popout: action.payload.popout
+			}
+		case SET_ALLOW_NOTIFICATIONS:
+			return {
+				...state,
+				allowNotifications: true
+			}
+		case SET_DENY_NOTIFICATIONS:
+			return {
+				...state,
+				allowNotifications: false
 			}
 		default:
 			return state;
